@@ -1,0 +1,26 @@
+<h1>Tous les matches de la coupe du monde de rugby 2023 en France</h1>
+
+<% matches.forEach(element => { %>
+  <a href="/matches/<%-element.teams[0].name%>/<%-element.teams[1].name%>">
+    <div class="card <% if (element.played) { %> played <% } %>">
+      <div class="teams">
+        <%- element.formated.teams %>
+      </div>
+
+      <% if (element.played) { %>
+        <div class="scores">
+          <%- element.formated.scores %>
+        </div>
+
+      <% } %>
+
+      <div class="date">
+        <%- element.formated.date %>
+      </div>
+
+      <div class="venue">
+        <%- element.formated.venue %>
+      </div>
+    </div>
+  </a>
+<% }) %>

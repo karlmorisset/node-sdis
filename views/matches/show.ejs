@@ -1,0 +1,43 @@
+<script type="text/javascript" type="module" src="/js/match.js" defer></script>
+
+<h2>Match <%- match.teams %></h2>
+
+<div class="card">
+  <div class="teams">
+    <%- match.teams %>
+  </div>
+
+  <div class="scores">
+    <%- match.scores %>
+  </div>
+
+  <div class="date">
+    <%- match.date %>
+  </div>
+</div>
+
+
+<form class="form" id="comment-form" action="/comments" method="POST">
+  <div class="fields">
+    <div class="form__field">
+      <label for="comment" class="form__title">
+        Ajouter un commentaire
+      </label>
+      <textarea class="form__textarea" name="content" id="comment"></textarea>
+    </div>
+    <input type="hidden" name="match" value="<%- match.id %>">
+
+    <div class="form__field">
+      <button class="form__button" type="submit">Soumettre</button>
+    </div>
+  </div>
+</form>
+
+<div class="comments">
+  <h2>Commentaires</h2>
+  <% comments.forEach(c => { %>
+    <div class="comment">
+      <%- c.content %>
+    </div>
+  <% }) %>
+</div>
