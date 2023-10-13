@@ -1,8 +1,9 @@
 import express from 'express';
 import expressEjsLayouts from 'express-ejs-layouts';
-import { start, connectDB } from './app.js';
-import matchesRouter from './app/Routes/matchesRoutes.js';
-import commentsRouter from './app/Routes/commentsRoutes.js';
+import { start, connectDB } from './app';
+import matchesRouter from './app/Routes/matchesRoutes';
+import commentsRouter from './app/Routes/commentsRoutes';
+import authRouter from './app/Routes/authRoutes';
 
 // Démarrage de l'application
 connectDB();
@@ -23,24 +24,8 @@ app.use(express.urlencoded());
 // Routes de l'application
 app.use('/matches', matchesRouter);
 app.use('/comments', commentsRouter);
+app.use('/auth', authRouter);
 
 app.get('/', (req, res) => {
   res.send('hello');
 });
-
-// import express from 'express';
-// import { getPlayedMatches, getScheduldedMatches } from './rugby-data.js';
-
-// const app = express();
-
-// app.use('/played', async (req, res) => {
-//   const playedMatches = await getPlayedMatches();
-//   res.status(200).json(playedMatches);
-// });
-
-// app.use('/scheduled', async (req, res) => {
-//   const scheduldedMatches = await getScheduldedMatches();
-//   res.status(200).json(scheduldedMatches);
-// });
-
-// app.listen(3000);
