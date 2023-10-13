@@ -6,13 +6,14 @@ import {
   show,
   syncData,
 } from '../Controllers/MatchesController';
+import { auth } from '../Middleware/authMiddleware';
 
 const router = Router();
 
-router.get('/', allMatches);
-router.get('/show/:id', show);
-router.get('/played', playedMatches);
-router.get('/scheduled', scheduledMatches);
-router.get('/sync-data', syncData);
+router.get('/', auth, allMatches);
+router.get('/show/:id', auth, show);
+router.get('/played', auth, playedMatches);
+router.get('/scheduled', auth, scheduledMatches);
+router.get('/sync-data', auth, syncData);
 
 export default router;

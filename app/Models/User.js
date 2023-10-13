@@ -29,25 +29,25 @@ async function encryptPassword(next) {
 
 userSchema.pre('save', encryptPassword);
 
+const throwError = () => {
+  throw new ValidationError('Identifiants incorrects', {
+    email: {
+      message: 'Email ou mot de passe invalide',
+    },
+    password: {
+      message: 'Email ou mot de passe invalide',
+    },
+  });
+};
+
 userSchema.statics.login = async function login(email, password) {
   const user = await this.findOne({ email });
 
-  if (!user) {
-    throw new ValidationError('Informations invalides', {
-      email: 'Email ou mot de passe invalide',
-      password: 'Email ou mot de passe invalide',
-    });
-  }
+  if (!user) throwError();
+
   const validPassword = await bcrypt.compare(password, user.password);
 
-  if (!validPassword) {
-    throw new Error({
-      errors: {
-        email: 'Email ou mot de passe invalide',
-        password: 'Email ou mot de passe invalide',
-      },
-    });
-  }
+  if (!validPassword) throwError();
 
   return user;
 };

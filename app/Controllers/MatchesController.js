@@ -61,7 +61,12 @@ export const show = async (req, res) => {
   const { id } = req.params;
 
   const match = await Match.findById(id);
-  const comments = await Comment.find({ match: id });
+  const comments = await Comment.find({ match: id }).populate([
+    'match',
+    'user',
+  ]);
+
+  console.log(comments);
 
   res.status(200).render('matches/show', { match, comments });
 };

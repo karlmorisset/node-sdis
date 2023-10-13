@@ -1,7 +1,7 @@
 const handleErrors = (error) => {
   const errors = {};
 
-  if (error.code) {
+  if (error.code && error.code === 11000) {
     const field = Object.keys(error.keyValue)[0];
     errors[field] = 'Cet email existe déjà';
   } else {

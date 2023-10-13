@@ -1,7 +1,7 @@
 import { Schema, SchemaTypes, model } from 'mongoose';
 
 const comment = {
-  content: {
+  comment: {
     type: String,
     required: [true, 'Le commentaire ne peut pas être vide'],
     maxLength: 500,
@@ -9,6 +9,10 @@ const comment = {
   match: {
     type: SchemaTypes.ObjectId,
     ref: 'Match',
+  },
+  user: {
+    type: SchemaTypes.ObjectId,
+    ref: 'User',
   },
 };
 

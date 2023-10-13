@@ -23,7 +23,8 @@
       <label for="comment" class="form__title">
         Ajouter un commentaire
       </label>
-      <textarea class="form__textarea" name="content" id="comment"></textarea>
+      <textarea class="form__textarea" name="comment" id="comment"></textarea>
+      <div class="form__error comment">Error comment</div>
     </div>
     <input type="hidden" name="match" value="<%- match.id %>">
 
@@ -36,8 +37,19 @@
 <div class="comments">
   <h2>Commentaires</h2>
   <% comments.forEach(c => { %>
-    <div class="comment">
-      <%- c.content %>
+    <div class="username">
+      <%- c.user.email %>
+    </div>
+    <div class="comment-item">
+      <%- c.comment %>
+
+      <% if (c.user.id === user) { %>
+      <form class="comment-delete">
+        <input type="hidden" name="comment" value="<%- c.id %>">
+        <button type="submit">Supprimer</button>
+      </form>
+      <% } %>
+
     </div>
   <% }) %>
 </div>

@@ -1,3 +1,6 @@
+<!-- Script du module -->
+<script type="text/javascript" type="module" src="/js/auth/logout.js" defer></script>
+
 <header class="header">
   <div class="logo">
     <a href="/matches"><img class="logo-rcw" src="/img/rwc2023-logo-symbol.svg" width="80" alt=""></a>
@@ -9,8 +12,15 @@
       <li><a href="/matches/played">Matches joués</a></li>
       <li><a href="/matches/scheduled">Matches programmés</a></li>
       <li><a href="/auth/signup">Créer un utilisateur</a></li>
-      <li><a href="/auth/login">Se connecter</a></li>
+      <% if (typeof user === "string" && user) { %>
+        <%- user %>
+        <li><form id="logout-form"><button type="submit" class="btn-link logout">Se déconnecter</button></form></li>
+      <% } else { %>
+          <li><a href="/auth/login">Se connecter</a></li>
+      <% } %>
+
       <li><a href="/matches/sync-data">Synchro des données</a></li>
     </ul>
   </nav>
+
 </header>
