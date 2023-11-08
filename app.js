@@ -1,5 +1,6 @@
 import express from 'express';
 import mongoose from 'mongoose';
+import { createServer } from 'node:http';
 import 'dotenv/config';
 
 /**
@@ -7,12 +8,13 @@ import 'dotenv/config';
  */
 export const start = (port = null) => {
   const app = express();
+  const httpServer = createServer(app);
   const realPort = port || process.env.NODE_PORT;
 
-  app.listen(realPort);
+  httpServer.listen(realPort);
   console.log(`Application lancée sur le port ${realPort}`);
 
-  return app;
+  return { app, httpServer };
 };
 
 /**

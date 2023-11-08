@@ -5,7 +5,10 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
+    "deploy:dev": "pm2 restart ecosystem.config.cjs --env development",
+    "deploy:production": "pm2 restart ecosystem.config.cjs --env production",
     "start": "nodemon --ext js,ejs,ts,css --experimental-modules --es-module-specifier-resolution=node index.js",
+    "production": "NODE_ENV=production && pm2 start index.js --node-args='--experimental-modules --es-module-specifier-resolution=node index.js'",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
@@ -22,6 +25,7 @@
     "jsonwebtoken": "^9.0.2",
     "mongodb": "^6.1.0",
     "mongoose": "^7.6.1",
+    "socket.io": "^4.7.2",
     "validator": "^13.11.0"
   }
 }

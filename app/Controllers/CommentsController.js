@@ -14,15 +14,23 @@ export const store = async (req, res) => {
   try {
     const match = Match.findById(matchId);
 
+    let freshComment = {};
+    let newComment = {};
+
     if (match) {
-      await Comment.create({
+      freshComment = await Comment.create({
         comment,
         match: matchId,
         user: res.locals.user,
       });
+
+      newComment = await Comment.findById(freshComment.id).populate([
+        'match',
+        'user',
+      ]);
     }
 
-    return res.status(201).json({ comment });
+    return res.status(201).json({ newComment });
   } catch (error) {
     return res.status(403).json({ errors: handleErrors(error) });
   }

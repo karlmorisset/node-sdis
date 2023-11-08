@@ -1,5 +1,28 @@
+const socket = io();
+
 const commentForm = document.getElementById('comment-form');
 const deleteForms = document.querySelectorAll('.comment-delete');
+
+const addComment = (newComment) => {
+  const commentsContainer = document.querySelector('.comments');
+  const comment = document.createElement('div');
+
+  const commentTemplate = `
+    <div class="username">
+      ${newComment.user.email}
+    </div>
+
+    <div class="comment-item">
+      ${newComment.comment}
+    </div>
+  `;
+
+  comment.innerHTML = commentTemplate;
+
+  commentsContainer.appendChild(comment);
+};
+
+socket.on('commentAddedfromBack', (data) => addComment(data.newComment));
 
 commentForm.addEventListener('submit', async (e) => {
   e.preventDefault();
@@ -14,15 +37,17 @@ commentForm.addEventListener('submit', async (e) => {
       headers: { 'Content-Type': 'application/json' },
     });
 
-    const data = await res.json();
+    const { newComment } = await res.json();
 
-    if (!data.errors) location.reload();
+    if (!newComment.errors) {
+      socket.emit('commentAddedFromFront', { newComment });
+    }
 
-    Object.keys(data.errors).forEach((field) => {
+    Object.keys(newComment.errors).forEach((field) => {
       const errorField = document.querySelector(`.form__error.${field}`);
       const inputField = document.getElementById(field);
 
-      errorField.textContent = data.errors[field];
+      errorField.textContent = newComment.errors[field];
       errorField.classList.add('visible');
 
       inputField.addEventListener('focus', () => {
