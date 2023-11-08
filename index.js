@@ -1,12 +1,13 @@
 import express from 'express';
 import expressEjsLayouts from 'express-ejs-layouts';
 import cookieParser from 'cookie-parser';
+import { Server } from 'socket.io';
 import { start, connectDB } from './app';
 import matchesRouter from './app/Routes/matchesRoutes';
 import commentsRouter from './app/Routes/commentsRoutes';
 import authRouter from './app/Routes/authRoutes';
 import { authUser } from './app/Middleware/authMiddleware';
-import { Server } from 'socket.io';
+import downloadRouter from './app/Routes/downloadsRoutes';
 
 // Démarrage de l'application
 connectDB();
@@ -42,6 +43,7 @@ io.on('connection', (socket) => {
 app.use('/matches', matchesRouter);
 app.use('/comments', commentsRouter);
 app.use('/auth', authRouter);
+app.use('/downloads', downloadRouter);
 
 app.get('/', (req, res) => {
   res.redirect('/matches');
