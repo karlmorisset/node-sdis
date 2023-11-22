@@ -1,16 +1,10 @@
-const handleErrors = (error) => {
-  const errors = {};
+const driver = `./${process.env.DB_DRIVER}-ValidationError.js`;
 
-  if (error.code && error.code === 11000) {
-    const field = Object.keys(error.keyValue)[0];
-    errors[field] = 'Cet email existe déjà';
-  } else {
-    Object.keys(error.errors).forEach((field) => {
-      errors[field] = error.errors[field].message;
-    });
-  }
-
-  return errors;
+const getHandleErrors = async () => {
+  const driverPromise = await import(driver);
+  return driverPromise.default;
 };
 
-export default handleErrors;
+const handler = await getHandleErrors();
+
+export default handler;

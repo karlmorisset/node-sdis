@@ -2,15 +2,16 @@ import express from 'express';
 import expressEjsLayouts from 'express-ejs-layouts';
 import cookieParser from 'cookie-parser';
 import { Server } from 'socket.io';
-import { start, connectDB } from './app';
-import matchesRouter from './app/Routes/matchesRoutes';
-import commentsRouter from './app/Routes/commentsRoutes';
-import authRouter from './app/Routes/authRoutes';
+import { start, connectDB, connectMySQL } from './app';
+import matchesRouter from './app/Routes/MySQL/matchesRoutes';
+import commentsRouter from './app/Routes/MySQL/commentsRoutes';
+import authRouter from './app/Routes/MySQL/authRoutes';
+import downloadRouter from './app/Routes/MySQL/downloadsRoutes';
 import { authUser } from './app/Middleware/authMiddleware';
-import downloadRouter from './app/Routes/downloadsRoutes';
 
 // Démarrage de l'application
-connectDB();
+//connectDB();
+connectMySQL();
 const { app, httpServer } = start();
 
 // Définition du répertoire des ressources statiques

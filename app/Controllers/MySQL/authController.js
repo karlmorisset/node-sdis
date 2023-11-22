@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
-import User from '../Models/User';
-import handleErrors from '../Services/validationError';
+import User from '../../Models/MySQL/User';
+import handleErrors from '../../Services/validationError';
 
 // Affichage du formulaire d'inscription d'un utilisateur
 export const signUp = (req, res) => {
@@ -15,11 +15,14 @@ export const signUp = (req, res) => {
 export const register = async (req, res) => {
   const { email, password } = req.body;
 
+  await User.sync();
+
   try {
     const user = await User.create({ email, password });
 
     res.status(201).json({ user });
   } catch (error) {
+    console.log(error);
     res.status(403).json({ errors: handleErrors(error) });
   }
 };
@@ -36,20 +39,20 @@ export const login = async (req, res) => {
 // Connexion d'un utilisateur
 export const connection = async (req, res) => {
   const { email, password } = req.body;
-
   const maxAge = 60 * 60 * 24;
 
   let user;
 
   try {
     user = await User.login(email, password);
-  } catch (error) {
-    res.status(403).json({ errors: handleErrors(error) });
-  }
 
-  if (user) {
     const token = jwt.sign(
-      { user: { id: user.id, email: user.email } },
+      {
+        user: {
+          id: user.id,
+          email: user.email,
+        },
+      },
       process.env.JWT_SECRET,
       {
         expiresIn: maxAge, // en secondes
@@ -62,6 +65,8 @@ export const connection = async (req, res) => {
     });
 
     res.status(200).json({ user });
+  } catch (error) {
+    return res.status(403).json({ errors: handleErrors(error) });
   }
 };
 

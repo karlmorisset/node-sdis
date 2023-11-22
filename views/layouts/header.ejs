@@ -12,8 +12,8 @@
       <li><a href="/matches/played">Matches joués</a></li>
       <li><a href="/matches/scheduled">Matches programmés</a></li>
       <li><a href="/auth/signup">Créer un utilisateur</a></li>
-      <% if (typeof user === "string" && user) { %>
-        <%- user %>
+      <% if (user) { %>
+        <%- user.email %>
         <li><form id="logout-form"><button type="submit" class="btn-link logout">Se déconnecter</button></form></li>
       <% } else { %>
           <li><a href="/auth/login">Se connecter</a></li>

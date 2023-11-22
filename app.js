@@ -1,4 +1,5 @@
 import express from 'express';
+import { Sequelize } from 'sequelize';
 import mongoose from 'mongoose';
 import { createServer } from 'node:http';
 import 'dotenv/config';
@@ -23,8 +24,21 @@ export const start = (port = null) => {
 export const connectDB = async () => {
   try {
     await mongoose.connect(process.env.MONGO_CNX);
-    console.warn('Connecté à la base de données');
+    console.warn('Connecté à la base de données MongoDB');
   } catch (error) {
     console.warn(error);
   }
 };
+
+const getSequelize = () =>
+  new Sequelize(`${process.env.MYSQL_CNX}/${process.env.MYSQL_DB}`);
+
+export const connectMySQL = async () => {
+  const sequelize = getSequelize();
+
+  await sequelize.authenticate();
+
+  console.log('Connecté à la base MySQL');
+};
+
+export const sequelize = getSequelize();

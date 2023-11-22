@@ -9,7 +9,7 @@ const addComment = (newComment) => {
 
   const commentTemplate = `
     <div class="username">
-      ${newComment.user.email}
+      ${newComment.author.email}
     </div>
 
     <div class="comment-item">
@@ -22,7 +22,9 @@ const addComment = (newComment) => {
   commentsContainer.appendChild(comment);
 };
 
-socket.on('commentAddedfromBack', (data) => addComment(data.newComment));
+socket.on('commentAddedfromBack', (data) => {
+  addComment(data.newComment);
+});
 
 commentForm.addEventListener('submit', async (e) => {
   e.preventDefault();
@@ -37,23 +39,26 @@ commentForm.addEventListener('submit', async (e) => {
       headers: { 'Content-Type': 'application/json' },
     });
 
-    const { newComment } = await res.json();
+    const newComment = await res.json();
 
     if (!newComment.errors) {
+      commentForm.reset();
       socket.emit('commentAddedFromFront', { newComment });
     }
 
-    Object.keys(newComment.errors).forEach((field) => {
-      const errorField = document.querySelector(`.form__error.${field}`);
-      const inputField = document.getElementById(field);
+    if (newComment.errors) {
+      Object.keys(newComment.errors).forEach((field) => {
+        const errorField = document.querySelector(`.form__error.${field}`);
+        const inputField = document.getElementById(field);
 
-      errorField.textContent = newComment.errors[field];
-      errorField.classList.add('visible');
+        errorField.textContent = newComment.errors[field];
+        errorField.classList.add('visible');
 
-      inputField.addEventListener('focus', () => {
-        errorField.classList.remove('visible');
+        inputField.addEventListener('focus', () => {
+          errorField.classList.remove('visible');
+        });
       });
-    });
+    }
   } catch (error) {
     console.warn(error);
   }

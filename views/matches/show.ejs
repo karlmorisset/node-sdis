@@ -44,12 +44,12 @@
     <h2>Commentaires</h2>
     <% comments.forEach(c => { %>
       <div class="username">
-        <%- c.user.email %>
+        <%- c.author.email %>
       </div>
       <div class="comment-item">
         <%- c.comment %>
 
-        <% if (c.user.id === user) { %>
+        <% if (c.author.id === user.id) { %>
         <form class="comment-delete">
           <input type="hidden" name="comment" value="<%- c.id %>">
           <button type="submit">Supprimer</button>
